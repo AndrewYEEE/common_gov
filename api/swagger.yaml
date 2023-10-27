@@ -1,0 +1,924 @@
+openapi: 3.0.1
+info:
+  title: 共通資料-行政區
+  description: |2-
+
+    ---
+    ##### API線上說明(Swagger UI)使用流程與注意事項：
+    1. 若不使用API金鑰呼叫API，則僅能透過瀏覽器呼叫`【基礎】`服務 ，且每個呼叫來源端IP的上限為每日50次。
+    2. `【進階】`、`【加值】`、`【歷史】`、`【MaaS】`服務需加入會員並取得API金鑰之後才能使用。
+    3. 欲使用API金鑰呼叫API，需[註冊為TDX會員](/register)，並於會員中心取得API金鑰。
+    4. 註冊為會員之後，至[【會員專區-資料服務-服務金鑰】](/user/dataservice/key)功能頁面，從預設金鑰(或建立新的金鑰)取得Client Id和Client Secret資訊。
+    5. 點選Swagger UI上的Authorize按鈕，依指示填入Client Id和Client Secret資訊並進行驗證，驗證完成後可開始於Swagger UI使用API。
+    6. 欲透過程式介接API，可參考[範例程式](https://github.com/tdxmotc/SampleCode)。
+    7. 為確保系統資源使用的合理分配與避免遭受濫用，於Swagger UI上使用API與程式介接API的行為將被記錄並定期做檢視。
+
+    ##### API呼叫次數限制:
+    1. 若不使用API金鑰呼叫API，則僅能透過瀏覽器呼叫`【基礎】`服務 ，且每個呼叫來源端IP的上限為每日50次。
+    2. 使用API金鑰呼叫API，每個呼叫來源端IP呼叫次數限制為50次/秒 (無每日上限)。
+
+    API OAS文本 :[請點我](https://tdx.transportdata.tw/webapi/File/Swagger/V3/152a47cc-4852-4fb0-93d3-9bb9db3811bd)
+  version: v2
+servers:
+- url: https://tdx.transportdata.tw/api/basic
+security:
+- TDX: []
+tags:
+- name: Basic
+  description: 基礎資料
+paths:
+  /v2/Basic/City:
+    get:
+      tags:
+      - Basic
+      summary: "取得[縣市]之City列表"
+      description: "取得[縣市]之City列表"
+      operationId: Basic_GetCity
+      parameters:
+      - name: $select
+        in: query
+        description: 挑選
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $filter
+        in: query
+        description: 過濾
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $orderby
+        in: query
+        description: 排序
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $top
+        in: query
+        description: 取前幾筆
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: $skip
+        in: query
+        description: 跳過前幾筆
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: $format
+        in: query
+        description: 指定來源格式
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - JSON
+          - XML
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfCity'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ArrayOfCity'
+        "204":
+          description: No Content
+          content:
+            application/json: {}
+            application/xml: {}
+        "404":
+          description: Customer Not Found
+          content:
+            application/json: {}
+            application/xml: {}
+  /v2/Basic/County:
+    get:
+      tags:
+      - Basic
+      summary: "取得[縣市]之County列表"
+      description: "取得[縣市]之County列表"
+      operationId: Basic_GetCounty
+      parameters:
+      - name: $select
+        in: query
+        description: 挑選
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $filter
+        in: query
+        description: 過濾
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $orderby
+        in: query
+        description: 排序
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $top
+        in: query
+        description: 取前幾筆
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: $skip
+        in: query
+        description: 跳過前幾筆
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: $format
+        in: query
+        description: 指定來源格式
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - JSON
+          - XML
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfCounty'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ArrayOfCounty'
+        "204":
+          description: No Content
+          content:
+            application/json: {}
+            application/xml: {}
+        "404":
+          description: Customer Not Found
+          content:
+            application/json: {}
+            application/xml: {}
+  /v2/Basic/City/{City}/Town:
+    get:
+      tags:
+      - Basic
+      summary: "取得指定[縣市(City)]之鄉鎮市區列表"
+      description: "取得指定[縣市(City)]之鄉鎮市區列表<br />\r\nTownCode以內政部戶政司制定代碼之前7碼作為鄉鎮市區之唯\
+        一代碼。第8碼原則為0，完整8碼請至內政部戶政司網站( https://www.ris.gov.tw/app/portal/164 )戶役政資料代碼\
+        內容查詢。"
+      operationId: Basic_GetCityTown
+      parameters:
+      - name: City
+        in: path
+        description: "縣市(英文)<br>Taipei = 臺北市, <br>Taichung = 臺中市, <br>Keelung = 基隆\
+          市, <br>Tainan = 臺南市, <br>Kaohsiung = 高雄市, <br>NewTaipei = 新北市, <br>YilanCounty\
+          \ = 宜蘭縣, <br>Taoyuan = 桃園市, <br>Chiayi = 嘉義市, <br>HsinchuCounty = 新竹縣, <br>MiaoliCounty\
+          \ = 苗栗縣, <br>NantouCounty = 南投縣, <br>ChanghuaCounty = 彰化縣, <br>Hsinchu =\
+          \ 新竹市, <br>YunlinCounty = 雲林縣, <br>ChiayiCounty = 嘉義縣, <br>PingtungCounty\
+          \ = 屏東縣, <br>HualienCounty = 花蓮縣, <br>TaitungCounty = 臺東縣, <br>KinmenCounty\
+          \ = 金門縣, <br>PenghuCounty = 澎湖縣, <br>LienchiangCounty = 連江縣"
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - Taipei
+          - Taichung
+          - Keelung
+          - Tainan
+          - Kaohsiung
+          - NewTaipei
+          - YilanCounty
+          - Taoyuan
+          - Chiayi
+          - HsinchuCounty
+          - MiaoliCounty
+          - NantouCounty
+          - ChanghuaCounty
+          - Hsinchu
+          - YunlinCounty
+          - ChiayiCounty
+          - PingtungCounty
+          - HualienCounty
+          - TaitungCounty
+      - name: $select
+        in: query
+        description: 挑選
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $filter
+        in: query
+        description: 過濾
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $orderby
+        in: query
+        description: 排序
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $top
+        in: query
+        description: 取前幾筆
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: $skip
+        in: query
+        description: 跳過前幾筆
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: $format
+        in: query
+        description: 指定來源格式
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - JSON
+          - XML
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfTown'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ArrayOfTown'
+        "204":
+          description: No Content
+          content:
+            application/json: {}
+            application/xml: {}
+        "404":
+          description: Customer Not Found
+          content:
+            application/json: {}
+            application/xml: {}
+  /v2/Basic/County/{County}/Town:
+    get:
+      tags:
+      - Basic
+      summary: "取得指定[縣市(County)]之鄉鎮市區列表"
+      description: "取得指定[縣市(County)]之鄉鎮市區列表<br />\r\nTownCode以內政部戶政司制定代碼之前7碼作為鄉鎮市區\
+        之唯一代碼。第8碼原則為0，完整8碼請至內政部戶政司網站( https://www.ris.gov.tw/app/portal/164 )戶役政資料\
+        代碼內容查詢。"
+      operationId: Basic_GetCountyTown
+      parameters:
+      - name: County
+        in: path
+        description: "縣市(英文)<br>Taipei = 臺北市, <br>Taichung = 臺中市, <br>Keelung = 基隆\
+          市, <br>Tainan = 臺南市, <br>Kaohsiung = 高雄市, <br>NewTaipei = 新北市, <br>YilanCounty\
+          \ = 宜蘭縣, <br>Taoyuan = 桃園市, <br>Chiayi = 嘉義市, <br>HsinchuCounty = 新竹縣, <br>MiaoliCounty\
+          \ = 苗栗縣, <br>NantouCounty = 南投縣, <br>ChanghuaCounty = 彰化縣, <br>Hsinchu =\
+          \ 新竹市, <br>YunlinCounty = 雲林縣, <br>ChiayiCounty = 嘉義縣, <br>PingtungCounty\
+          \ = 屏東縣, <br>HualienCounty = 花蓮縣, <br>TaitungCounty = 臺東縣, <br>KinmenCounty\
+          \ = 金門縣, <br>PenghuCounty = 澎湖縣, <br>LienchiangCounty = 連江縣"
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - Taipei
+          - Taichung
+          - Keelung
+          - Tainan
+          - Kaohsiung
+          - NewTaipei
+          - YilanCounty
+          - Taoyuan
+          - Chiayi
+          - HsinchuCounty
+          - MiaoliCounty
+          - NantouCounty
+          - ChanghuaCounty
+          - Hsinchu
+          - YunlinCounty
+          - ChiayiCounty
+          - PingtungCounty
+          - HualienCounty
+          - TaitungCounty
+      - name: $select
+        in: query
+        description: 挑選
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $filter
+        in: query
+        description: 過濾
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $orderby
+        in: query
+        description: 排序
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $top
+        in: query
+        description: 取前幾筆
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: $skip
+        in: query
+        description: 跳過前幾筆
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: $format
+        in: query
+        description: 指定來源格式
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - JSON
+          - XML
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfCountyTown'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ArrayOfCountyTown'
+        "204":
+          description: No Content
+          content:
+            application/json: {}
+            application/xml: {}
+        "404":
+          description: Customer Not Found
+          content:
+            application/json: {}
+            application/xml: {}
+  /v2/Basic/City/{City}/Village:
+    get:
+      tags:
+      - Basic
+      summary: "取得指定[縣市(City)]之村里列表"
+      description: "取得指定[縣市(City)]之村里列表"
+      operationId: Basic_GetCityVillage
+      parameters:
+      - name: City
+        in: path
+        description: "縣市(英文)<br>Taipei = 臺北市, <br>Taichung = 臺中市, <br>Keelung = 基隆\
+          市, <br>Tainan = 臺南市, <br>Kaohsiung = 高雄市, <br>NewTaipei = 新北市, <br>YilanCounty\
+          \ = 宜蘭縣, <br>Taoyuan = 桃園市, <br>Chiayi = 嘉義市, <br>HsinchuCounty = 新竹縣, <br>MiaoliCounty\
+          \ = 苗栗縣, <br>NantouCounty = 南投縣, <br>ChanghuaCounty = 彰化縣, <br>Hsinchu =\
+          \ 新竹市, <br>YunlinCounty = 雲林縣, <br>ChiayiCounty = 嘉義縣, <br>PingtungCounty\
+          \ = 屏東縣, <br>HualienCounty = 花蓮縣, <br>TaitungCounty = 臺東縣, <br>KinmenCounty\
+          \ = 金門縣, <br>PenghuCounty = 澎湖縣, <br>LienchiangCounty = 連江縣"
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - Taipei
+          - Taichung
+          - Keelung
+          - Tainan
+          - Kaohsiung
+          - NewTaipei
+          - YilanCounty
+          - Taoyuan
+          - Chiayi
+          - HsinchuCounty
+          - MiaoliCounty
+          - NantouCounty
+          - ChanghuaCounty
+          - Hsinchu
+          - YunlinCounty
+          - ChiayiCounty
+          - PingtungCounty
+          - HualienCounty
+          - TaitungCounty
+      - name: $select
+        in: query
+        description: 挑選
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $filter
+        in: query
+        description: 過濾
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $orderby
+        in: query
+        description: 排序
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $top
+        in: query
+        description: 取前幾筆
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: $skip
+        in: query
+        description: 跳過前幾筆
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: $format
+        in: query
+        description: 指定來源格式
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - JSON
+          - XML
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfVillage'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ArrayOfVillage'
+        "204":
+          description: No Content
+          content:
+            application/json: {}
+            application/xml: {}
+        "404":
+          description: Customer Not Found
+          content:
+            application/json: {}
+            application/xml: {}
+  /v2/Basic/County/{County}/Village:
+    get:
+      tags:
+      - Basic
+      summary: "取得指定[縣市(County)]之村里列表"
+      description: "取得指定[縣市(County)]之村里列表"
+      operationId: Basic_GetCountyVillage
+      parameters:
+      - name: County
+        in: path
+        description: "縣市(英文)<br>Taipei = 臺北市, <br>Taichung = 臺中市, <br>Keelung = 基隆\
+          市, <br>Tainan = 臺南市, <br>Kaohsiung = 高雄市, <br>NewTaipei = 新北市, <br>YilanCounty\
+          \ = 宜蘭縣, <br>Taoyuan = 桃園市, <br>Chiayi = 嘉義市, <br>HsinchuCounty = 新竹縣, <br>MiaoliCounty\
+          \ = 苗栗縣, <br>NantouCounty = 南投縣, <br>ChanghuaCounty = 彰化縣, <br>Hsinchu =\
+          \ 新竹市, <br>YunlinCounty = 雲林縣, <br>ChiayiCounty = 嘉義縣, <br>PingtungCounty\
+          \ = 屏東縣, <br>HualienCounty = 花蓮縣, <br>TaitungCounty = 臺東縣, <br>KinmenCounty\
+          \ = 金門縣, <br>PenghuCounty = 澎湖縣, <br>LienchiangCounty = 連江縣"
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - Taipei
+          - Taichung
+          - Keelung
+          - Tainan
+          - Kaohsiung
+          - NewTaipei
+          - YilanCounty
+          - Taoyuan
+          - Chiayi
+          - HsinchuCounty
+          - MiaoliCounty
+          - NantouCounty
+          - ChanghuaCounty
+          - Hsinchu
+          - YunlinCounty
+          - ChiayiCounty
+          - PingtungCounty
+          - HualienCounty
+          - TaitungCounty
+      - name: $select
+        in: query
+        description: 挑選
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $filter
+        in: query
+        description: 過濾
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $orderby
+        in: query
+        description: 排序
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: $top
+        in: query
+        description: 取前幾筆
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: $skip
+        in: query
+        description: 跳過前幾筆
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: $format
+        in: query
+        description: 指定來源格式
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - JSON
+          - XML
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfCountyVillage'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ArrayOfCountyVillage'
+        "204":
+          description: No Content
+          content:
+            application/json: {}
+            application/xml: {}
+        "404":
+          description: Customer Not Found
+          content:
+            application/json: {}
+            application/xml: {}
+components:
+  schemas:
+    ArrayOfCity:
+      type: object
+      properties:
+        City:
+          type: array
+          items:
+            $ref: '#/components/schemas/BasicCity'
+      example:
+        City:
+        - CityCode: CityCode
+          CityID: CityID
+          Version: Version
+          CityName: CityName
+          City: City
+          CountyID: CountyID
+        - CityCode: CityCode
+          CityID: CityID
+          Version: Version
+          CityName: CityName
+          City: City
+          CountyID: CountyID
+    BasicCity:
+      type: object
+      properties:
+        CityID:
+          type: string
+          description: 縣市代碼
+        CityName:
+          type: string
+          description: 縣市名稱(中文)
+        CityCode:
+          type: string
+          description: 縣市簡碼(國際ISO 3166-2 三碼縣市代碼)
+        City:
+          type: string
+          description: 縣市(英文)
+        CountyID:
+          type: string
+          description: 縣市代碼(簡稱:縣市碼)
+        Version:
+          type: string
+          description: 資料版本編號
+      example:
+        CityCode: CityCode
+        CityID: CityID
+        Version: Version
+        CityName: CityName
+        City: City
+        CountyID: CountyID
+    ArrayOfCounty:
+      type: object
+      properties:
+        County:
+          type: array
+          items:
+            $ref: '#/components/schemas/BasicCounty'
+      example:
+        County:
+        - CountyCode: CountyCode
+          CityID: CityID
+          Version: Version
+          CountyID: CountyID
+          County: County
+          CountyName: CountyName
+        - CountyCode: CountyCode
+          CityID: CityID
+          Version: Version
+          CountyID: CountyID
+          County: County
+          CountyName: CountyName
+    BasicCounty:
+      type: object
+      properties:
+        CountyID:
+          type: string
+          description: 縣市代碼(簡稱:縣市碼)
+        CountyName:
+          type: string
+          description: 縣市名稱(中文)
+        CountyCode:
+          type: string
+          description: 縣市代碼(五碼)
+        County:
+          type: string
+          description: 縣市(英文)
+        CityID:
+          type: string
+          description: 縣市代碼(簡稱:縣市碼)
+        Version:
+          type: string
+          description: 資料版本編號
+      example:
+        CountyCode: CountyCode
+        CityID: CityID
+        Version: Version
+        CountyID: CountyID
+        County: County
+        CountyName: CountyName
+    ArrayOfTown:
+      type: object
+      properties:
+        Town:
+          type: array
+          items:
+            $ref: '#/components/schemas/Town'
+      example:
+        Town:
+        - Version: Version
+          TownName: TownName
+          TownCode: TownCode
+          CityName: CityName
+        - Version: Version
+          TownName: TownName
+          TownCode: TownCode
+          CityName: CityName
+    Town:
+      type: object
+      properties:
+        TownName:
+          type: string
+          description: 鄉鎮市區名稱(中文)
+        TownCode:
+          type: string
+          description: 鄉鎮市區代碼
+        CityName:
+          type: string
+          description: 縣市名稱(中文)
+        Version:
+          type: string
+          description: 資料版本編號
+      example:
+        Version: Version
+        TownName: TownName
+        TownCode: TownCode
+        CityName: CityName
+    ArrayOfCountyTown:
+      type: object
+      properties:
+        Town:
+          type: array
+          items:
+            $ref: '#/components/schemas/CountyTown'
+      example:
+        Town:
+        - Version: Version
+          TownName: TownName
+          TownCode: TownCode
+          CountyName: CountyName
+        - Version: Version
+          TownName: TownName
+          TownCode: TownCode
+          CountyName: CountyName
+    CountyTown:
+      type: object
+      properties:
+        TownName:
+          type: string
+          description: 鄉鎮市區名稱(中文)
+        TownCode:
+          type: string
+          description: 鄉鎮市區代碼
+        CountyName:
+          type: string
+          description: 縣市名稱(中文)
+        Version:
+          type: string
+          description: 資料版本編號
+      example:
+        Version: Version
+        TownName: TownName
+        TownCode: TownCode
+        CountyName: CountyName
+    ArrayOfVillage:
+      type: object
+      properties:
+        Village:
+          type: array
+          items:
+            $ref: '#/components/schemas/Village'
+      example:
+        Village:
+        - VillageName: VillageName
+          Version: Version
+          TownName: TownName
+          TownCode: TownCode
+          VillageID: VillageID
+          CityName: CityName
+        - VillageName: VillageName
+          Version: Version
+          TownName: TownName
+          TownCode: TownCode
+          VillageID: VillageID
+          CityName: CityName
+    Village:
+      type: object
+      properties:
+        VillageName:
+          type: string
+          description: 村里名稱(中文)
+        VillageID:
+          type: string
+          description: 村里代碼
+        TownName:
+          type: string
+          description: 鄉鎮市區名稱(中文)
+        TownCode:
+          type: string
+          description: 鄉鎮市區代碼
+        CityName:
+          type: string
+          description: 縣市名稱(中文)
+        Version:
+          type: string
+          description: 資料版本編號
+      example:
+        VillageName: VillageName
+        Version: Version
+        TownName: TownName
+        TownCode: TownCode
+        VillageID: VillageID
+        CityName: CityName
+    ArrayOfCountyVillage:
+      type: object
+      properties:
+        Village:
+          type: array
+          items:
+            $ref: '#/components/schemas/CountyVillage'
+      example:
+        Village:
+        - VillageName: VillageName
+          Version: Version
+          TownName: TownName
+          TownCode: TownCode
+          VillageID: VillageID
+          CountyName: CountyName
+        - VillageName: VillageName
+          Version: Version
+          TownName: TownName
+          TownCode: TownCode
+          VillageID: VillageID
+          CountyName: CountyName
+    CountyVillage:
+      type: object
+      properties:
+        VillageName:
+          type: string
+          description: 村里名稱(中文)
+        VillageID:
+          type: string
+          description: 村里代碼
+        TownName:
+          type: string
+          description: 鄉鎮市區名稱(中文)
+        TownCode:
+          type: string
+          description: 鄉鎮市區代碼
+        CountyName:
+          type: string
+          description: 縣市名稱(中文)
+        Version:
+          type: string
+          description: 資料版本編號
+      example:
+        VillageName: VillageName
+        Version: Version
+        TownName: TownName
+        TownCode: TownCode
+        VillageID: VillageID
+        CountyName: CountyName
+  securitySchemes:
+    TDX:
+      type: oauth2
+      description: TDX會員可至【會員專區-資料服務-服務金鑰】功能頁面，從預設金鑰(或建立新的金鑰)取得Client Id和Client Secret資訊，分別輸入至下方client_id和client_secret欄位、按下Authorize按鈕，即可開始於Swagger介面呼叫TDX
+        API。
+      flows:
+        clientCredentials:
+          tokenUrl: https://tdx.transportdata.tw/auth/realms/TDXConnect/protocol/openid-connect/token
+          scopes: {}
